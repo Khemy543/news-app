@@ -8,7 +8,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import { CalendarToday, ChevronRight } from "@material-ui/icons";
-import { ListItemIcon, Divider, Grid } from "@material-ui/core";
+import { ListItemIcon, Divider } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 
 const LINES_TO_SHOW = 2;
@@ -48,16 +48,18 @@ export default function Home() {
   }, []);
 
   const viewNewsDetails = (news) => {
-    navigate(`/details/${news.id}`);
+    navigate(`/details/${news.id}`, {
+      state:news
+    });
   };
 
   return (
     <>
       <List className={classes.root}>
         {news.map((item) => (
-          <>
+          <React.Fragment
+          key={item.id}>
             <ListItem
-              key={item.id}
               alignItems="center"
               button
               onClick={() => viewNewsDetails(item)}
@@ -80,23 +82,17 @@ export default function Home() {
                 }
                 secondary={
                   <React.Fragment>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                      <Grid item>
-                        <Typography
-                          variant="overline"
-                          className={classes.multiLineEllipsis}
-                          style={{ lineHeight: 1.7, marginTop: "5px" }}
-                        >
-                          {item.byline}
-                        </Typography>
-                      </Grid>
-                      <Grid>
-                        <CalendarToday
-                          style={{ height: "16px", width: "16px", marginRight:"4px"}}
-                        />
-                        {item.published_date}
-                      </Grid>
-                    </Grid>
+                      <Typography
+                        variant="overline"
+                        className={classes.multiLineEllipsis}
+                        style={{ lineHeight: 1.7, marginTop: "5px" }}
+                      >
+                        {item.byline}
+                      </Typography>
+                      <CalendarToday
+                        style={{ height: "16px", width: "16px", marginRight:"4px"}}
+                      />
+                      {item.published_date}
                   </React.Fragment>
                 }
               />
@@ -105,7 +101,7 @@ export default function Home() {
               </ListItemIcon>
             </ListItem>
             <Divider variant="inset" component="li" />
-          </>
+          </React.Fragment>
         ))}
       </List>
     </>
